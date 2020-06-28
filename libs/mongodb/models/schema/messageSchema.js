@@ -26,9 +26,13 @@ let messageSchema = new mongoose.Schema({
     content: {
         type: String
     },
+    roomId: {
+        type: String,
+        required: true
+    },
     createdAt: Date,
     updatedAt: Date
-}, { collection: 'message' });
+}, { collection: 'message'});
 messageSchema.plugin(timestamp)
 messageSchema.plugin(mongoosePaginate);
 

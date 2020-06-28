@@ -11,9 +11,34 @@
     },
     "service": {
         "authorization": {
-            "uri": "http://localhost",
-            "user": "datpham",
-            "pass": "123456"
+            "uri": "http://127.0.0.1",
+            "user": "newtel",
+            "pass": "newtel123"
+        },
+        "socket" : {
+            "uri" : "http://127.0.0.1:3008",
+            "clickAction": {
+                "newConversation": "newConversation"
+            },
+            "authen": {
+                "user": "newtel",
+                "pass": "newtel123"
+            }
+        },
+        "notification": {
+            "authen": {
+                "user": "newtel",
+                "pass": "newtel123"
+            },
+            "clickAction": {
+                "newConversation": "newConversation"
+            },
+            "uri" : "http://127.0.0.1:3007",
+            "icon": "https://auth.newtel.com.vn/images/logo-title.png"
         }
+    },
+    "basicAuthen": {
+        "account": "newtel",
+        "pass": "newtel123"
     }
 }
