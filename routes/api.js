@@ -23,13 +23,13 @@ apiRouterBasicAuth.use(mdwAddHeaderJson);
 apiRouter.post('/sendMessage', async ctx => { await new messageCtrl(ctx).index() });
 
 //lay danh sach room theo user current
-apiRouter.get('/room', async ctx => { await new roomCtrl(ctx).listRoom() });
+apiRouter.get('/user/room', async ctx => { await new roomCtrl(ctx).listRoom() });
 
 //moi user vao room theo email va roomId
-apiRouter.post('/addRoom', async ctx => { await new roomCtrl(ctx).addRoom() })
+apiRouter.post('/user/addRoom', async ctx => { await new roomCtrl(ctx).addRoom() });
 
 //remove user ra khoi room theo email va roomId
-apiRouter.post('/outRoom', async ctx => { await new roomCtrl(ctx).outRoom() })
+apiRouter.post('/user/outRoom', async ctx => { await new roomCtrl(ctx).outRoom() });
 
 //basic authen
 apiRouterBasicAuth.use(koaBasicAuth(config.basicAuthen));

@@ -16,7 +16,7 @@ module.exports = class messageCtrl extends controller {
 
     /**
      * thuc hien tao va gui tin nhan cho nguoi dung theo roomId
-     */
+    */
     async index() {
         //validate
         let validate = await this.validate(this.getBody(), {
