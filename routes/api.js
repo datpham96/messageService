@@ -26,7 +26,7 @@ apiRouter.post('/sendMessage', async ctx => { await new messageCtrl(ctx).index()
 apiRouter.get('/user/room', async ctx => { await new roomCtrl(ctx).listRoom() });
 
 //lay danh message theo roomId
-apiRouter.get('/user/room/:roomId', async ctx => { await new roomCtrl(ctx).listRoom(ctx.params.roomId) });
+apiRouter.get('/user/room/:roomId', async ctx => { await new roomCtrl(ctx).roomDetail(ctx.params.roomId) });
 
 //moi user vao room theo email va roomId
 apiRouter.post('/user/addRoom', async ctx => { await new roomCtrl(ctx).addRoom() });
