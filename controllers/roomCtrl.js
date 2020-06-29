@@ -12,6 +12,22 @@ module.exports = class roomCtrl extends controller {
     /**
      * Lay danh sach room by current user
      */
+    async roomDetail(roomId){
+        try {
+            let listMessage = await this.messageModel.find({
+                roomId: roomId
+            })
+
+            return this.response(listMessage);
+
+        } catch (error) {
+            return this.response({ status: false }, 500);
+        }
+    }
+
+    /**
+     * Lay danh sach room by current user
+     */
     async listRoom() {
         try {
             let listRoom = await this.roomModel.find();
@@ -29,7 +45,6 @@ module.exports = class roomCtrl extends controller {
         } catch (error) {
             return this.response({ status: false }, 500);
         }
-
     }
 
     //create room
