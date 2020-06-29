@@ -28,10 +28,10 @@ module.exports = class roomCtrl extends controller {
     /**
      * Lay danh sach room by current user
      */
-    async listRoom() {
+    async listRoom(email) {
         try {
             let listRoom = await this.roomModel.find();
-            let emailCurent = this.userInfo.email;
+            let emailCurent = (email) ? email : this.userInfo.email;
             let arrRoom = [];
             if(listRoom){
                 lodash.each(listRoom, function(item){

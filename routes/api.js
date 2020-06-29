@@ -39,6 +39,9 @@ apiRouterBasicAuth.use(koaBasicAuth(config.basicAuthen));
 //tao room khi tao user
 apiRouterBasicAuth.post('/room', async ctx => { await new roomCtrl(ctx).createRoom() });
 
+//lay danh sach room theo email
+apiRouterBasicAuth.get('/user/roomBasic/:email', async ctx => { await new roomCtrl(ctx).listRoom(ctx.params.email) });
+
 module.exports = {
     apiRouter,
     apiRouterBasicAuth
