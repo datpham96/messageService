@@ -4,6 +4,9 @@ const lodash = require('lodash');
 const notificationService = require('../libs/service/notificationService');
 const socketService = require('../libs/service/socketService');
 const config = require('../config/app.json');
+const fs = require('fs');
+const path = require('path');
+var basename = path.basename(__filename);
 
 
 module.exports = class messageCtrl extends controller {
@@ -100,4 +103,39 @@ module.exports = class messageCtrl extends controller {
             return false;
         }
     }
+
+    /**
+     * Upload file
+     */
+    async uploadFile() {
+        try {
+            let validate = await this.validate(this.getBody(), {
+                'path': 'required',
+                'fileContent': 'required',
+            }, {
+                'path.required': 'path không được bỏ trống',
+                'fileContent.required': 'file Content không được bỏ trống',
+            });
+    
+            if (validate.fails()) {
+                return this.response(validate.messages(), 422);
+            }
+    
+            let pathFile = this.getInput('path', '');
+            let fileContent = this.getInput('fileContent', '');
+            fileContent = fileContent.replace(/^data:image\/png;base64,/, "");
+
+            let filePath = path.join(__dirname, '..','libs','upload','message')
+            console.log(filePath)
+            fs.writeFileSync(filePath, fileContent, 'base64', function(err) {
+                console.log(err);
+            });
+
+            return this.response({ status: true }, 200);
+        } catch (error) {
+            return this.response({ status: false, 'errMsg': error.toString() }, 500);
+        }
+
+    }
+
 }

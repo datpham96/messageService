@@ -22,6 +22,9 @@ apiRouterBasicAuth.use(mdwAddHeaderJson);
 //thuc hien insert va gui tin nhan
 apiRouter.post('/sendMessage', async ctx => { await new messageCtrl(ctx).index() });
 
+//upload file
+apiRouter.post('/upload/file', async ctx => { await new messageCtrl(ctx).uploadFile() });
+
 //lay danh sach room theo user current
 apiRouter.get('/user/room', async ctx => { await new roomCtrl(ctx).listRoom() });
 
