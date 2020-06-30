@@ -34,20 +34,42 @@ module.exports = class messageCtrl extends controller {
             'type.required': 'Type không được bỏ trống',
             'email.email': 'email không đúng định dạng'
         });
+        let type = this.getInput('type')
+        if(type == "image"){
+            validate = await this.validate(this.getBody(), {
+                'path': 'required',
+                'fileContent': 'required',
+            }, {
+                'path.required': 'path không được bỏ trống',
+                'fileContent.required': 'fileContent không được bỏ trống'
+            });
+        }
 
         if (validate.fails()) {
-            this.response(validate.messages(), 422);
-            return false;
+            console.log(validate.messages())
+            return this.response(validate.messages(), 422);
         }
         let userId = this.getInput('userId')
-        let type = this.getInput('type')
+        
         let typeData = this.getInput('typeData')
         let content = this.getInput('content')
         let email = this.getInput('email')
         let roomId = this.getInput('roomId')
+        let fConvertFilePath;
+        if(type == "image"){
+            let fPath = this.getInput('path')
+            let fContent = this.getInput('fileContent')
+            content = this.uploadFile(fPath, fContent)
+        }
         try {
             //thuc hien them tin nhan vao csdl
-            let articleId = await this.insertMessage(userId, type, typeData, content, email, roomId);
+            let articleId;
+            if(type == "image"){
+                articleId = await this.insertMessage(userId, type, typeData, content, email, roomId);
+            }else{
+                articleId = await this.insertMessage(userId, type, typeData, content, email, roomId);
+            }
+            
             //get list email trong room
             let getInfoRoom = await this.roomModel.findOne({
                 roomId: roomId
@@ -78,7 +100,8 @@ module.exports = class messageCtrl extends controller {
 
             return this.response({ status: true })
         } catch (error) {
-            return this.response({ status: false }, 422)
+            console.log(error)
+            return this.response({ status: false }, 500)
         }
     }
 
@@ -109,36 +132,21 @@ module.exports = class messageCtrl extends controller {
     /**
      * Upload file
      */
-    async uploadFile() {
+    async uploadFile(fPath, fContent) {
         try {
-            let validate = await this.validate(this.getBody(), {
-                'path': 'required',
-                'fileContent': 'required',
-            }, {
-                'path.required': 'path không được bỏ trống',
-                'fileContent.required': 'file Content không được bỏ trống',
-            });
-    
-            if (validate.fails()) {
-                return this.response(validate.messages(), 422);
-            }
-    
-            let pathFile = cryptoRandomString({length: 20}) + "." + this.getInput('path', '');
-            let fileContent = this.getInput('fileContent', '');
+            let pathFile = cryptoRandomString({length: 20}) + "." + fPath;
+            let fileContent = fContent;
             fileContent = fileContent.replace(/^data:image\/png;base64,/, "");
 
             let filePath = path.join(__dirname, '..','libs','upload','message') + "/" + pathFile;
-            console.log(filePath)
             fs.writeFileSync(filePath, fileContent, 'base64', function(err) {
                 console.log(err);
             });
-            // console.log()
-            // return fs.readFileSync(filePath, 'utf8')
 
-            return this.response({ status: true }, 200);
+            return pathFile;
         } catch (error) {
             console.log(error)
-            return this.response({ status: false, 'errMsg': error.toString() }, 500);
+            return false;
         }
 
     }
