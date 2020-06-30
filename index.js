@@ -15,6 +15,7 @@ if (appConfig.showLog) {
 app.use(bodyParse());
 app.use(route.apiRouter.routes());
 app.use(route.apiRouterBasicAuth.routes());
+app.use(route.fileRouter.routes());
 
 app.listen(appConfig.port, ()=>{
     console.log('port ' + appConfig.port)

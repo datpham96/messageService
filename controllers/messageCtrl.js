@@ -7,12 +7,14 @@ const config = require('../config/app.json');
 const fs = require('fs');
 const path = require('path');
 var basename = path.basename(__filename);
+const download = require("downloadjs");
+const cryptoRandomString = require('crypto-random-string');
 
 
 module.exports = class messageCtrl extends controller {
     constructor(ctx) {
         super(ctx);
-        // this.ctx = ctx;
+        this.ctx = ctx;
         this.notificationService = new notificationService();
         this.socketService = new socketService();
     }
@@ -121,21 +123,39 @@ module.exports = class messageCtrl extends controller {
                 return this.response(validate.messages(), 422);
             }
     
-            let pathFile = this.getInput('path', '');
+            let pathFile = cryptoRandomString({length: 20}) + "." + this.getInput('path', '');
             let fileContent = this.getInput('fileContent', '');
             fileContent = fileContent.replace(/^data:image\/png;base64,/, "");
 
-            let filePath = path.join(__dirname, '..','libs','upload','message')
+            let filePath = path.join(__dirname, '..','libs','upload','message') + "/" + pathFile;
             console.log(filePath)
             fs.writeFileSync(filePath, fileContent, 'base64', function(err) {
                 console.log(err);
             });
+            // console.log()
+            // return fs.readFileSync(filePath, 'utf8')
 
             return this.response({ status: true }, 200);
         } catch (error) {
+            console.log(error)
             return this.response({ status: false, 'errMsg': error.toString() }, 500);
         }
 
+    }
+
+    async getFile(fileName){
+        let filePath = path.join(__dirname, '..','libs','upload','message') + "/" + fileName;
+        try {
+            if (fs.existsSync(filePath)) {
+              this.ctx.body = fs.createReadStream(filePath);
+              this.ctx.attachment(filePath);
+            } else {
+                this.ctx.throw(400, "Requested file not found on server");
+            }
+          } catch(error) {
+            this.ctx.throw(500, error);
+          }  
+        
     }
 
 }

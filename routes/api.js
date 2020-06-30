@@ -10,6 +10,10 @@ let apiRouter = new Router({
     prefix: '/api/v1'
 });
 
+let fileRouter = new Router({
+    prefix: '/api/v1'
+});
+
 let apiRouterBasicAuth = new Router({
     prefix: '/api/v1'
 });
@@ -24,6 +28,9 @@ apiRouter.post('/sendMessage', async ctx => { await new messageCtrl(ctx).index()
 
 //upload file
 apiRouter.post('/upload/file', async ctx => { await new messageCtrl(ctx).uploadFile() });
+
+//get file
+fileRouter.get('/file/:fileName', async ctx => { await new messageCtrl(ctx).getFile(ctx.params.fileName) })
 
 //lay danh sach room theo user current
 apiRouter.get('/user/room', async ctx => { await new roomCtrl(ctx).listRoom() });
@@ -47,5 +54,6 @@ apiRouterBasicAuth.get('/user/roomBasic/:email', async ctx => { await new roomCt
 
 module.exports = {
     apiRouter,
-    apiRouterBasicAuth
+    apiRouterBasicAuth,
+    fileRouter
 };
