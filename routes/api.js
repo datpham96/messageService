@@ -26,9 +26,6 @@ apiRouterBasicAuth.use(mdwAddHeaderJson);
 //thuc hien insert va gui tin nhan
 apiRouter.post('/sendMessage', async ctx => { await new messageCtrl(ctx).index() });
 
-//upload file
-apiRouter.post('/upload/file', async ctx => { await new messageCtrl(ctx).uploadFile() });
-
 //get file
 fileRouter.get('/file/:fileName', async ctx => { await new messageCtrl(ctx).getFile(ctx.params.fileName) })
 
