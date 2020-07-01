@@ -26,6 +26,16 @@ class socketService {
         }
         return axios.post(url, postData, { headers: this.header });
     }
+
+    inviteUser(email, roomId, name){
+        let url = this.uri + '/api/v1/invite';
+        let postData = {
+            "email": email,
+            "roomId": roomId,
+            "name": name
+        }
+        return axios.post(url, postData, { headers: this.header });
+    }
 }
 
 module.exports = socketService;
