@@ -46,7 +46,6 @@ module.exports = class messageCtrl extends controller {
         }
 
         if (validate.fails()) {
-            console.log(validate.messages())
             return this.response(validate.messages(), 422);
         }
         let userId = this.getInput('userId')
@@ -59,7 +58,8 @@ module.exports = class messageCtrl extends controller {
         if(type == "image"){
             let fPath = this.getInput('path')
             let fContent = this.getInput('fileContent')
-            content = this.uploadFile(fPath, fContent)
+            content = await this.uploadFile(fPath, fContent)
+            
         }
         try {
             //thuc hien them tin nhan vao csdl

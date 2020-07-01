@@ -26,8 +26,7 @@ class notificationService {
             "data": data,
             "type": "device"
         }
-        console.log(url,'url')
-        console.log(postData,'postData')
+
         return axios.post(url, postData, { headers: this.header });
     }
 }
