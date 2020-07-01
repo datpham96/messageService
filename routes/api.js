@@ -11,7 +11,7 @@ let apiRouter = new Router({
 });
 
 let fileRouter = new Router({
-    prefix: '/api/v1'
+    prefix: '/'
 });
 
 let apiRouterBasicAuth = new Router({
