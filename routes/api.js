@@ -1,6 +1,7 @@
 const Router = require("koa-router");
 const messageCtrl = require('../controllers/messageCtrl');
 const roomCtrl = require('../controllers/roomCtrl');
+const inviteCtrl = require('../controllers/inviteCtrl');
 const mdwAddHeaderJson = require('../middleware/apiHeaderResponse');
 const checkUserInfo = require('../middleware/checkUserInfo');
 const koaBasicAuth = require("koa-basic-auth");
@@ -22,6 +23,12 @@ apiRouter.use(mdwAddHeaderJson);
 apiRouter.use(checkUserInfo);
 
 apiRouterBasicAuth.use(mdwAddHeaderJson);
+
+//moi user other vao room
+apiRouter.post('/invite/user', async ctx => { await new inviteCtrl(ctx).index() });
+
+//danh sach loi moi
+apiRouter.get('/invite/:email', async ctx => { await new inviteCtrl(ctx).listInvite(ctx.params.email) });
 
 //thuc hien insert va gui tin nhan
 apiRouter.post('/sendMessage', async ctx => { await new messageCtrl(ctx).index() });
