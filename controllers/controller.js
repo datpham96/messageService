@@ -3,6 +3,7 @@ const validate =  require('../libs/MyValidate');
 const myFunc = require('../libs/myFunc');
 const MessageSchema = require('../libs/mongodb/models/schema/messageSchema')
 const RoomSchema = require('../libs/mongodb/models/schema/roomSchema')
+const inviteSchema = require('../libs/mongodb/models/schema/inviteSchema')
 
 module.exports = class controller{
     constructor(ctx){
@@ -12,6 +13,7 @@ module.exports = class controller{
         this.myFunc = myFunc;
         this.messageModel = MessageSchema;
         this.roomModel = RoomSchema;
+        this.inviteModel = inviteSchema;
         this.userInfo = this.ctx.header.userInfo;
     }
     

@@ -143,8 +143,7 @@ module.exports = class roomCtrl extends controller {
 
         let roomId = this.getInput('roomId');
         let email = this.getInput('email');
-        let userInfo = this.userInfo;
-        if(userInfo.email == email){
+        if(roomId == email){
             return this.response({ status: false, errMsg: "Bạn không thể đá chính mình" }, 422);
         }
         try {
