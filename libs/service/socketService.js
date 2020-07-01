@@ -14,14 +14,15 @@ class socketService {
         }
     }
 
-    sendMessage(emailSend, emailReceive, topicId, body, articleId) {
+    sendMessage(emailSend, emailReceive, topicId, body, articleId, type) {
         let url = this.uri + '/api/v1/sendMessage';
         let postData = {
             "emailSend": emailSend,
             "emailReceive": emailReceive,
             "body": body || "",
             "topicId": topicId,
-            "articleId" : articleId
+            "articleId" : articleId,
+            "typeMessage": type
         }
         return axios.post(url, postData, { headers: this.header });
     }

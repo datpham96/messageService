@@ -82,7 +82,7 @@ module.exports = class messageCtrl extends controller {
             }
             
             //send socket
-            await this.socketService.sendMessage(email, listEmailOfRoomId, roomId, content, articleId);
+            await this.socketService.sendMessage(email, listEmailOfRoomId, roomId, content, articleId, type);
 
             // send notificationService
             await this.notificationService.sendMessage(
@@ -95,7 +95,8 @@ module.exports = class messageCtrl extends controller {
                     topicId: roomId,
                     articleId: articleId,
                     emailSender: email,
-                }
+                },
+                type
             );
 
             return this.response({ status: true })

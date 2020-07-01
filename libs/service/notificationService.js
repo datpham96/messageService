@@ -14,7 +14,7 @@ class notificationService {
         }
     }
 
-    sendMessage(emailSend, emailReceive, title, body, icon, clickAction, data) {
+    sendMessage(emailSend, emailReceive, title, body, icon, clickAction, data, typeMessage) {
         let url = this.uri + '/api/v1/sendMessage';
         let postData = {
             "emailSend": emailSend,
@@ -24,7 +24,8 @@ class notificationService {
             "icon": icon || "",
             "clickAction": clickAction,
             "data": data,
-            "type": "device"
+            "type": "device",
+            "typeMessage": typeMessage,
         }
 
         return axios.post(url, postData, { headers: this.header });
