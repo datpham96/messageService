@@ -56,6 +56,9 @@ apiRouterBasicAuth.post('/room', async ctx => { await new roomCtrl(ctx).createRo
 //lay danh sach room theo email
 apiRouterBasicAuth.get('/user/roomBasic/:email', async ctx => { await new roomCtrl(ctx).listRoom(ctx.params.email) });
 
+//moi user vao room theo email va roomId
+apiRouterBasicAuth.post('/user/addRoomBasic', async ctx => { await new roomCtrl(ctx).addRoom() });
+
 module.exports = {
     apiRouter,
     apiRouterBasicAuth,

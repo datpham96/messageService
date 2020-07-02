@@ -2,11 +2,13 @@ const controller = require('./controller');
 const moment = require('moment');
 const lodash = require('lodash');
 const messageType = require('../libs/config/listType/messageType');
+const socketService = require('../libs/service/socketService')
 
 module.exports = class inviteCtrl extends controller {
     constructor(ctx) {
         super(ctx);
         // this.ctx = ctx;
+        this.socketService = new socketService();
     }
 
     async index(){
@@ -33,6 +35,10 @@ module.exports = class inviteCtrl extends controller {
                 'name': name,
                 'email': email
             });
+
+            //gui qua socket
+            await this.socketService.inviteUser(email, roomId, name);
+
             if(respData){
                 return this.response({ status: true, id: respData._id }, 200);
             }

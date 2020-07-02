@@ -98,9 +98,9 @@ module.exports = class roomCtrl extends controller {
         let email = this.getInput('email')
 
         let userInfo = this.userInfo;
-        if(userInfo.email != roomId){
-            return this.response({ status: false, errMsg: "Bạn không có quyền thực hiện chức năng này" }, 422);
-        }
+        // if(userInfo.email != roomId){
+        //     return this.response({ status: false, errMsg: "Bạn không có quyền thực hiện chức năng này" }, 422);
+        // }
 
         if(userInfo.email == email){
             return this.response({ status: false, errMsg: "Bạn không thể mời chính mình" }, 422);
