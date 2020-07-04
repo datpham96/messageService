@@ -43,7 +43,7 @@ apiRouter.get('/user/room/:roomId', async ctx => { await new roomCtrl(ctx).roomD
 apiRouter.post('/user/addRoom', async ctx => { await new roomCtrl(ctx).addRoom() });
 
 //remove user ra khoi room theo email va roomId
-apiRouter.post('/user/outRoom', async ctx => { await new roomCtrl(ctx).outRoom() });
+// apiRouter.post('/user/outRoom', async ctx => { await new roomCtrl(ctx).outRoom() });
 
 //basic authen
 apiRouterBasicAuth.use(koaBasicAuth(config.basicAuthen));
@@ -53,11 +53,14 @@ apiRouterBasicAuth.post('/room', async ctx => { await new roomCtrl(ctx).createRo
 //lay danh sach room theo email
 apiRouterBasicAuth.get('/user/roomBasic/:email', async ctx => { await new roomCtrl(ctx).listRoom(ctx.params.email) });
 
-//moi user vao room theo email va roomId
+//them user vao room
 apiRouterBasicAuth.post('/user/addRoomBasic', async ctx => { await new roomCtrl(ctx).addRoom() });
 
 //invite user vao room theo email va roomId
 apiRouterBasicAuth.post('/user/invite', async ctx => { await new inviteCtrl(ctx).addInvite() });
+
+//out room
+apiRouterBasicAuth.post('/user/out', async ctx => { await new roomCtrl(ctx).outRoom() });
 
 //danh sach loi moi basicAuth
 apiRouterBasicAuth.get('/checkInvite/:email/:roomId', async ctx => { await new inviteCtrl(ctx).checkInvite(ctx.params.email, ctx.params.roomId) });
