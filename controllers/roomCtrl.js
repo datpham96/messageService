@@ -78,7 +78,7 @@ module.exports = class roomCtrl extends controller {
         }
     }
 
-    //add email to room by roomId
+    //add email to room by roomId (co type = true|false)
     async addRoom() {
         //validate
         let validate = await this.validate(this.getBody(), {
@@ -98,11 +98,8 @@ module.exports = class roomCtrl extends controller {
         let email = this.getInput('email')
 
         let userInfo = this.userInfo;
-        // if(userInfo.email != roomId){
-        //     return this.response({ status: false, errMsg: "Bạn không có quyền thực hiện chức năng này" }, 422);
-        // }
 
-        if(userInfo.email == email){
+        if(roomId == email){
             return this.response({ status: false, errMsg: "Bạn không thể mời chính mình" }, 422);
         }
         try {
@@ -115,8 +112,13 @@ module.exports = class roomCtrl extends controller {
                 return this.response({ status: false, errMsg: "Người dùng đã có trong phòng" }, 422);
             }
             arrEmail.push(email);
-            getInfoRoom.email = arrEmail;
-            getInfoRoom.save();
+            if(this.getInput('type')){
+                getInfoRoom.email = arrEmail;
+                getInfoRoom.save();
+            }
+            
+            //xoa loi moi khi da xac nhan dong y hoac huy bo
+            await this.inviteModel.deleteOne({ email: email })
 
             return this.response({ status: true }, 200);
         } catch (error) {

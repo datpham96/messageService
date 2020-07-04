@@ -11,33 +11,47 @@ module.exports = class inviteCtrl extends controller {
         this.socketService = new socketService();
     }
 
-    async index(){
+    //add invite
+    async addInvite(){
         //validate
         let validate = await this.validate(this.getBody(), {
             'roomId': 'required',
             'email': 'required|email',
-            'name': 'required'
         }, {
             'roomId.required': 'roomId không được bỏ trống',
             'email.required': 'Email không được bỏ trống',
-            'name.required': 'name không được bỏ trống',
             'email.email': 'email không đúng định dạng'
         });
 
         if (validate.fails()) {
             return this.response(validate.messages(), 422);
         }
-            
+        let roomId = this.getInput('roomId')
+        let email = this.getInput('email')
+        //check room
+        let getInfoRoom = await this.roomModel.findOne({
+            roomId: roomId
+        })
+
+        //check invite
+        let getInfoInvite = await this.inviteModel.findOne({
+            email: email
+        })
+        if(getInfoInvite){
+            return this.response({ status: false, errMsg: "Bạn đã mời người này trước đó" }, 422);
+        }
+
+        if(!getInfoRoom){
+            return this.response({ status: false, errMsg: "Thông tin phòng không xác địng" }, 422);
+        }
+
         try {
              //thuc hien insert
-            let respData = await this.inviteModel.create({
+             let respData = await this.inviteModel.create({
                 'roomId': roomId,
-                'name': name,
+                'name': getInfoRoom.name,
                 'email': email
             });
-
-            //gui qua socket
-            await this.socketService.inviteUser(email, roomId, name);
 
             if(respData){
                 return this.response({ status: true, id: respData._id }, 200);
@@ -45,6 +59,7 @@ module.exports = class inviteCtrl extends controller {
         } catch (error) {
             return this.response({ status: false }, 500);
         }
+            
     }
 
     //danh sách lời mời vào room
@@ -53,11 +68,29 @@ module.exports = class inviteCtrl extends controller {
         try {
              //thuc hien insert
             let respData = await this.inviteModel.find({
-                'email': email
+                email: email
             });
             if(respData){
                 return this.response(respData);
             }
+        } catch (error) {
+            return this.response({ status: false }, 500);
+        }
+    }
+
+    //kiem tra loi moi ket ban
+    async checkInvite(email, roomId){
+        try {
+             //thuc hien insert
+            let respData = await this.inviteModel.findOne({
+                roomId: roomId,
+                email: email
+            });
+            if(respData){
+                return this.response({ status: false, errMsg: "Bạn đã mời người này rồi" }, 422);
+            }
+
+            return this.response({ status: true })
         } catch (error) {
             return this.response({ status: false }, 500);
         }

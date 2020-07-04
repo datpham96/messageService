@@ -24,9 +24,6 @@ apiRouter.use(checkUserInfo);
 
 apiRouterBasicAuth.use(mdwAddHeaderJson);
 
-//moi user other vao room
-apiRouter.post('/invite/user', async ctx => { await new inviteCtrl(ctx).index() });
-
 //danh sach loi moi
 apiRouter.get('/invite/:email', async ctx => { await new inviteCtrl(ctx).listInvite(ctx.params.email) });
 
@@ -58,6 +55,12 @@ apiRouterBasicAuth.get('/user/roomBasic/:email', async ctx => { await new roomCt
 
 //moi user vao room theo email va roomId
 apiRouterBasicAuth.post('/user/addRoomBasic', async ctx => { await new roomCtrl(ctx).addRoom() });
+
+//invite user vao room theo email va roomId
+apiRouterBasicAuth.post('/user/invite', async ctx => { await new inviteCtrl(ctx).addInvite() });
+
+//danh sach loi moi basicAuth
+apiRouterBasicAuth.get('/checkInvite/:email/:roomId', async ctx => { await new inviteCtrl(ctx).checkInvite(ctx.params.email, ctx.params.roomId) });
 
 module.exports = {
     apiRouter,
